@@ -24,3 +24,18 @@ def transcribe_chunk(chunk_path : str, translate: bool = False)-> str:
     result = model.transcribe(chunk_path, task=task)
 
     return result['text']
+
+def transcribe_all(chunks, translate=False):
+    transcripts = []
+
+    for i, chunk_path in enumerate(chunks, start=1):
+        print(f"Transcribing chunk {i}: {chunk_path}")
+
+        text = transcribe_chunk(
+            chunk_path,
+            translate=translate
+        )
+
+        transcripts.append(text)
+
+    return "\n".join(transcripts)
