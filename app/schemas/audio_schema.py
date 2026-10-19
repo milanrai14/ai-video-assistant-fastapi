@@ -14,3 +14,18 @@ class PrepareAudioRequest(BaseModel):
 class PrepareAudioResponse(BaseModel): 
     message: str
     output_path: str
+
+
+
+class ProcessAudioRequest(BaseModel):
+    source: str = Field(
+        ...,
+        description="YouTube URL or local audio/video file path",
+        examples=["https://www.youtube.com/watch?v=example"],
+    )
+
+
+class ProcessAudioResponse(BaseModel):
+    message: str
+    chunks: list[str]
+    total_chunks: int

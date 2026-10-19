@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 
-from app.schemas.audio_schema import (YoutubeAudioRequest, YoutubeAudioResponese, PrepareAudioRequest, PrepareAudioResponse)
-from app.utils.media_processor import download_youtube_audio, prepare_audio_for_transcription
+from app.schemas.audio_schema import (YoutubeAudioRequest, YoutubeAudioResponese, PrepareAudioRequest, PrepareAudioResponse, ProcessAudioResponse, ProcessAudioRequest)
+from app.utils.media_processor import download_youtube_audio, prepare_audio_for_transcription, prepare_audio_chunks
 
 router = APIRouter(prefix="/audio", tags=['Audio'])
 
@@ -38,4 +38,30 @@ def download_and_prepare_audio(request: YoutubeAudioRequest):
             detail=f"Audio processing failed: {str(exc)}",
         )
 
-    
+
+@router.post("/process",response_model=ProcessAudioResponse)
+def process_audio(request: ProcessAudioRequest):
+    try: 
+        chunks = prepare_audio_chunks(request.source)
+        return ProcessAudioResponse(
+            message= "Audio processed and chunked successfully", 
+            chunks=chunks,
+            total_chunks=len(chunks)
+        )
+    except FileNotFoundError as exc:
+        raise HTTPException(
+            status_code=404,
+            detail=str(exc),
+        ) from exc
+
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=400,
+            detail=str(exc),
+        ) from exc
+
+    except Exception as exc:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Audio processing failed: {exc}",
+        ) from exc
