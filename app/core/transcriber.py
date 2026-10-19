@@ -16,3 +16,11 @@ def load_model():
         print("Whisper model loaded successfully")
 
     return _model
+
+def transcribe_chunk(chunk_path : str, translate: bool = False)-> str:
+    model = load_model()
+    task = "translate" if translate else "transcribe"
+
+    result = model.transcribe(chunk_path, task=task)
+
+    return result['text']
