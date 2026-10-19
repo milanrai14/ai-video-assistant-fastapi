@@ -38,24 +38,32 @@ def prepare_audio_for_transcription(input_path):
     audio =audio.set_channels(1).set_frame_rate(16000)
 
     output_path = os.path.splitext(input_path)[0]+ "_converted.wav"
-    audio.export(output_path, fromat="wav")
+    audio.export(output_path, format="wav")
     return output_path
 
 
-def chunk_audio(wav_path: str, chunk_minut: int) -> str:
+
+def chunk_audio(wav_path: str, chunk_minut: int = 10) -> list[str]:
     if chunk_minut <= 0:
-        raise ValueError("Chunk minute must be greater than zero.")
+        raise ValueError("Chunk minutes must be greater than zero.")
+
     audio = AudioSegment.from_wav(wav_path)
-    chunks_ms = chunk_minut * 60 * 1000
+    chunk_size_ms = chunk_minut * 60 * 1000
 
-    chunks = []
-    for i, start in enumerate(range(0, len(audio)), chunks_ms):
-        chunk = audio[start:start+chunks_ms]
-        chunk_path = f"{wav_path}_chunk_{i}.wav"
-        chunk.export(chunk_path, format='wav')
+    chunk_paths = []
 
-        chunks.append(chunk)
-    return chunks
+    for i, start in enumerate(range(0, len(audio), chunk_size_ms)):
+        chunk = audio[start:start + chunk_size_ms]
+
+        chunk_path = (
+            f"{os.path.splitext(wav_path)[0]}_chunk_{i}.wav"
+        )
+
+        chunk.export(chunk_path, format="wav")
+        chunk_paths.append(chunk_path)
+
+    return chunk_paths
+
 
 def prepare_audio_chunks(source: str) -> list[str]:
     if source.startswith(("http://", "https://")):
