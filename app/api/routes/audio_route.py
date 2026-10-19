@@ -5,25 +5,26 @@ from app.utils.media_processor import download_youtube_audio, prepare_audio_for_
 
 router = APIRouter(prefix="/audio", tags=['Audio'])
 
-@router.post("/download", response_model=YoutubeAudioResponese)
-def download_audio(request: YoutubeAudioRequest):
-    try: 
-        file_path = download_youtube_audio(str(request.url))
+# @router.post("/download", response_model=YoutubeAudioResponese)
+# def download_audio(request: YoutubeAudioRequest):
+#     try: 
+#         file_path = download_youtube_audio(str(request.url))
 
-        return YoutubeAudioResponese(
-            message="Audio downloaded successfully",
-            file_path=file_path
-        )
-    except Exception as exc:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Audio download failed: {exc}"
-        ) from exc
+#         return YoutubeAudioResponese(
+#             message="Audio downloaded successfully",
+#             file_path=file_path
+#         )
+#     except Exception as exc:
+#         raise HTTPException(
+#             status_code=500,
+#             detail=f"Audio download failed: {exc}"
+#         ) from exc
 
 @router.post("/prepare", response_model=PrepareAudioResponse)
-def prepare_audio(request: PrepareAudioRequest):
+def download_and_prepare_audio(request: YoutubeAudioRequest):
     try:
-        output_path = prepare_audio_for_transcription(request.input_path)
+        download_path = download_youtube_audio(str(request.url))
+        output_path = prepare_audio_for_transcription(download_path)
 
         return PrepareAudioResponse(
             message="Audio prepared successfully for transcription",
