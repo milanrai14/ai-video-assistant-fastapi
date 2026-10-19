@@ -56,3 +56,21 @@ def chunk_audio(wav_path: str, chunk_minut: int) -> str:
 
         chunks.append(chunk)
     return chunks
+
+def prepare_audio_chunks(source: str) -> list[str]:
+    if source.startswith(("http://", "https://")):
+        print("Detected YouTube URL. Downloading audio...")
+        audio_path = download_youtube_audio(source)
+    else:
+        print("Detected local file.")
+        audio_path = source
+
+    print("Converting to WAV...")
+    wav_path = prepare_audio_for_transcription(audio_path)
+
+    print("Chunking audio...")
+    chunks = chunk_audio(wav_path)
+
+    print(f"Audio ready - {len(chunks)} chunk(s) created.")
+
+    return chunks
