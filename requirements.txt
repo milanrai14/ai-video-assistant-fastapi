@@ -1,0 +1,34 @@
+
+# FastAPI backend
+fastapi[standard]
+uvicorn[standard]
+python-multipart
+pydantic-settings
+
+# LangChain and Ollama
+langchain
+langchain-core
+langchain-community
+langchain-ollama
+langchain-text-splitters
+
+# RAG and vector database
+chromadb
+sentence-transformers
+
+# Audio transcription
+openai-whisper
+pydub
+SpeechRecognition
+
+# Video and audio downloading / processing
+yt-dlp
+
+# Environment variables and utilities
+python-dotenv
+
+# HTTP requests
+httpx
+
+# Testing
+pytest
