@@ -55,4 +55,16 @@ def extract_action_items(transcript: str)->str:
 
     chain = build_extraction_chain(system_prompt)
     return chain.invoke(transcript)
-    
+
+def extract_key_decision(transcript: str) -> str: 
+    system_prompt = """
+    You are an expert meetings analyst. From the meeting transcript,
+    extract all key decisions made.
+
+    Format the results as a numbered list.
+    If no key decisions are found, say "No key decisions found."
+    """
+
+    chain = build_extraction_chain(system_prompt)
+
+    return chain.invoke(transcript)
