@@ -28,4 +28,14 @@ def build_extraction_chain(system_prompt: str):
         ("human", "{text}")
     ])
 
-    
+    parser = get_parser()
+
+    chain = (
+        passthrough
+        | format_input
+        | prompt
+        | llm
+        | parser
+    )
+
+    return chain
