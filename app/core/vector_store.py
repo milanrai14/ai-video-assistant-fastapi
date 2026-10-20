@@ -6,11 +6,11 @@ from langchain_core.documents import Document
 
 CHROMA_DIR = "vector_db"
 COLLECTION_NAME = "meeting_transcript"
+EMBEDDING_MODEL="nomic-embed-text"
 
 def get_embeddings():
     return OllamaEmbeddings(
-        model_name = EMBEDDING_MODEL,
-        model_kwargs = {"device": 'cpu'}
+        model = EMBEDDING_MODEL,
     )
 
 def build_vector_store(transcript: str) -> Chroma:
