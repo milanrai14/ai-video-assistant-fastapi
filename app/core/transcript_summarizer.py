@@ -62,3 +62,26 @@ def summarize_transcript(transcript: str) -> str:
     )
 
     return combined_chain.invoke(combined)
+
+def generate_transcript_title(transcript: str) -> str:
+    llm = get_llm()
+    parser = get_parser()
+
+    title_prompt = ChatPromptTemplate.from_messages([
+        (
+            "system",
+            "Based on the transcript, generate a short, "
+            "professional, descriptive title."
+        ),
+        ("human", "{text}"),
+    ])
+
+    title_chain = (
+        RunnablePassthrough()
+        | RunnableLambda(lambda x: {"text": x})
+        | title_prompt
+        | llm
+        | parser
+    )
+
+    return title_chain.invoke(transcript)
