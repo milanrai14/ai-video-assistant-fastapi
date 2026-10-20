@@ -68,3 +68,15 @@ def extract_key_decision(transcript: str) -> str:
     chain = build_extraction_chain(system_prompt)
 
     return chain.invoke(transcript)
+
+def extract_open_questions(transcript: str) -> str:
+    system_prompt = """
+    From the meeting transcript, extract all unresolved questions
+    or topics requiring follow-up.
+
+    Format the results as a numbered list.
+    If none are found, say "No open questions found."
+    """
+    chain = build_extraction_chain(system_prompt)
+
+    return chain.invoke(transcript)
