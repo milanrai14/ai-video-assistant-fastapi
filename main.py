@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from app.api.routes.audio_route import router as audio_router
+from app.api.routes.video_route import router as video_router
 
 
 
@@ -16,3 +17,4 @@ def root():
     }
 
 app.include_router(audio_router)
+app.include_router(video_router)
