@@ -39,3 +39,20 @@ def build_extraction_chain(system_prompt: str):
     )
 
     return chain
+
+def extract_action_items(transcript: str)->str:
+    system_prompt = """
+    You are an expert meetings analyst. From the meeting transcript,
+    extract all action items. For each action item, provide:
+
+    - Task description
+    - Owner (who is responsible)
+    - Deadline (if mentioned, otherwise write "Not specified")
+
+    Format the results as a numbered list.
+    If no action items are found, say "No action items found".
+    """
+
+    chain = build_extraction_chain(system_prompt)
+    return chain.invoke(transcript)
+    
