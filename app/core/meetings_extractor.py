@@ -12,6 +12,10 @@ def get_llm():
     )
     return llm
 
+def get_parser():
+    parser = StrOutputParser()
+    return parser
+
 def build_extraction_chain(system_prompt: str):
     llm = get_llm()
     passthrough = RunnablePassthrough()
@@ -23,3 +27,5 @@ def build_extraction_chain(system_prompt: str):
         ("system", system_prompt), 
         ("human", "{text}")
     ])
+
+    
