@@ -2,6 +2,8 @@ import os
 import whisper
 from dotenv import load_dotenv
 
+load_dotenv()
+
 WISHPER_MODEL= os.getenv("WISHPER_SMALL", "small")
 
 _model = None
